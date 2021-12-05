@@ -3,27 +3,32 @@
 #include <random>
 #include <iostream>
 #include <vector>
+#include <fstream>
 
-void initial_distribution_array (int Nmol, int size, int ratio, int * vector, int seed);// int * vector?
+void initial_distribution_array (int Nmol, int size, int ratio, std::vector<int> & vector, int seed);// int * vector?
 void step (int Nmol, int size, int * vector, int seed);
 
 int main(int argc, char *argv[])
 {
-    const int N = 10;
+    int Nmol = 0;
+    int size = 0;
+    int Nstep = 0;
     int seed = 0;
-    double mu=0, sigma=0.5;
+    int ratio = 10;
+    std::ifstream input;
+    input.open("input.txt");
+    input >> Nmol >> size >> Nstep >> seed;
+    input.close();
 
     std::vector<int> particles{0}; //inicializa el vector
+    particles.resize(Nmol);
 
-    std::mt19937 gen(seed);
-    std::uniform_real_distribution<> dis{0,1};
-    for (int i=0; i<N; i++){
-	    std::cout<<dis(gen)<<std::endl;
-    }
+    initial_distribution_array(Nmol, size, ratio, particles, seed);
+
     return 0;
 }
 
-void initial_distribution_array (int Nmol, int size, int ratio, int * vector, int seed)
+void initial_distribution_array (int Nmol, int size, int ratio, std::vector<int> & vector, int seed)
 {
     int init_size = size/ratio;
 
