@@ -41,25 +41,25 @@ void initial_distribution_array (int Nmol, int size, int ratio, int * vector, in
 void step (int Nmol, int size, int * vector, int seed)
 {
     std::mt19937 gen(seed); //OJO: de pronto se generan los numeros aleatorios 3 veces
-    std::uniform_int_distribution<> dis{0, Nmol -1};
-    int mol = dis(gen);
-    std::uniform_int_distribution<> dis{0, 4};
-    int paso = dis(gen);
+    std::uniform_int_distribution<> dis_1{0, Nmol -1};
+    int mol = dis_1(gen);
+    std::uniform_int_distribution<> dis_2{0, 4};
+    int paso = dis_2(gen);
     int aqui = vector[mol]; //aqui es la posicion de la particula. reemplazar aqui por vector[mol] donde se usa en los if
     if (paso==1) {
-	if (vector[mol]/size != 0) vector[mol] += -size;//arriba
-	else vector[mol] += (size-1)*size; //se teletransporta hacia la pared de abajo
+        if (vector[mol]/size != 0) vector[mol] += -size;//arriba
+        else vector[mol] += (size-1)*size; //se teletransporta hacia la pared de abajo
     }
-    if (paso==2) {
-	if (vector[mol]/size != size-1) vector[mol] += size;//abajo
-	else vector[mol] = vector[mol] % size;//se teletransporta hacia la pared de arriba
+    else if (paso==2) {
+        if (vector[mol]/size != size-1) vector[mol] += size;//abajo
+        else vector[mol] = vector[mol] % size;//se teletransporta hacia la pared de arriba
     }
-    if (paso==3) {
-	if (vector[mol] % size != 0) vector[mol] += -1;//izquierda camarada
-	else vector[mol] += size -1;//se teletransporta hacia la pared derecha
+    else if (paso==3) {
+        if (vector[mol] % size != 0) vector[mol] += -1;//izquierda camarada
+        else vector[mol] += size -1;//se teletransporta hacia la pared derecha
     }
-    if (paso==4) {
-	if (aqui % size != size-1)  vector[mol] += 1;//le voy a dar en la cara marica
-	else vector[mol] = aqui/size; //se teletransporta hacia la pared izquierda
+    else if (paso==4) {
+        if (aqui % size != size-1)  vector[mol] += 1;//le voy a dar en la cara marica
+        else vector[mol] = aqui/size; //se teletransporta hacia la pared izquierda
     }
 }
