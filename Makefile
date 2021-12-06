@@ -1,6 +1,6 @@
 all: Entropia.png
 entropia.x: bosquejo.cpp
-	g++ -g -fsanitizie=address -fsanitize=undefined -fsanitize=leak $< -o $@
+	g++ -g -fsanitize=address -fsanitize=undefined -fsanitize=leak $< -o $@
 entropia.txt: entropia.x
 	./$< > $@
 Entropia.png: graf_ent.gp entropia.txt
