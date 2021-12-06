@@ -7,7 +7,7 @@
 #include <fstream>
 
 void initial_distribution_array (int Nmol, int size, int ratio, std::vector<int> & vector, int seed);// int * vector?
-void step (int Nmol, int size, std::vector<int> vector, int seed, int Nstep);
+void step (int Nmol, int size, std::vector<int> & vector, int seed, int Nstep);
 double entropia(int Nmol, std::vector<int> & vector);
 
 int main(int argc, char *argv[])
@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
 
     initial_distribution_array(Nmol, size, ratio, particles, seed);
 
-    step(Nmol, size, particles, seed, Nstep);
+    step (Nmol,size,particles,seed,Nstep);
 
     return 0;
 }
@@ -50,28 +50,45 @@ void initial_distribution_array (int Nmol, int size, int ratio, std::vector<int>
 double entropia(int Nmol, std::vector<int> & vector)
 {
     std::sort(vector.begin(), vector.end());//ordena los valores del vector para que los que son iguales queden contiguos
-    double A_Nmol = Nmol;
-    double sum = 0;
-    int aux = 0;
-    int counter = 0;
-    int counter2 = 0;
-    aux = vector[counter2];
-    while(counter2 < Nmol)
-    {
-        while(counter2 < Nmol && aux == vector[counter2])
-        {
-            counter += 1;
-            counter2 += 1;
-        }
-        sum += (counter/A_Nmol)*std::log(counter/A_Nmol);
-        counter = 0;
-        if(counter2 < Nmol)
-        {
-            aux = vector[counter2];
-        }
+    double sum=0;
+    double aux=1;
+    for(int ii=0; ii<Nmol-1;++ ii){
+      if(vector[ii] != vector[ii+1]){
+	aux= aux/Nmol;
+	sum -= aux*(std::log(aux));
+	aux=1;
+      }
+      else{
+	aux+=1;
+      }
     }
-    return -sum;
+    aux= aux/Nmol;
+    sum-= aux*(std::log(aux));
+  
+    return sum;
+    //    double A_Nmol = Nmol;
+    //double sum = 0;
+    //int aux = 0;
+    //int counter = 0;
+    //int counter2 = 0;
+    //aux = vector[counter2];
+    //while(counter2 < Nmol)
+    //{
+    //    while(counter2 < Nmol && aux == vector[counter2])
+    //    {
+    //        counter += 1;
+    //        counter2 += 1;
+    //    }
+    //    sum += (counter/A_Nmol)*std::log(counter/A_Nmol);
+    //    counter = 0;
+    //    if(counter2 < Nmol)
+    //    {
+    //        aux = vector[counter2];
+    //    }
+    //}
+    //return -sum;
 }
+
 
 void step (int Nmol, int size, std::vector<int> & vector, int seed, int Nstep)
 {
