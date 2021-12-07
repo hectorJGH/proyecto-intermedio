@@ -19,16 +19,24 @@ int main(int argc, char *argv[])
     int Nstep = 0;
     int seed = 0;
     int ratio = 10;
+    
+    //Lectura desde el archivo input.txt 
     std::ifstream input;
     input.open("input.txt");
-    input >> Nmol >> size >> Nstep >> seed;
+    input >> Nmol >> size >> Nstep >> seed;//40 20 1000000 0
     input.close();
 
+    //Las componentes del vector contienen las posiciones 
+    //de cada particula
     std::vector<int> particles{0}; //inicializa el vector
     particles.resize(Nmol);
-
+    
+    //Ubica las particulas aleatoriamente en su distribucion inicial
+    //cerca al centro de la taza
     initial_distribution_array(Nmol, size, ratio, particles, seed);
 
+    //Se realizan todos los pasos de la difusion y en cada uno se
+    //imprime el paso, la entropia total y el radio de difusion
     step (Nmol,size,particles,seed,Nstep);
 
     return 0;
