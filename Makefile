@@ -1,5 +1,5 @@
 all: Entropia.png
-entropia.x: bosquejo.cpp
+entropia.x: bosquejo.cpp input.txt
 	g++ -g -fsanitize=address -fsanitize=undefined -fsanitize=leak $< -o $@
 entropia.txt: entropia.x
 	./$< > $@
