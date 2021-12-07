@@ -5,10 +5,12 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <cmath>
 
 void initial_distribution_array (int Nmol, int size, int ratio, std::vector<int> & vector, int seed);// int * vector?
 void step (int Nmol, int size, std::vector<int> & vector, int seed, int Nstep);
 double entropia(int Nmol, std::vector<int> & vector);
+double radius(int Nmol, std::vector<int> & vector, int size);
 
 int main(int argc, char *argv[])
 {
@@ -63,30 +65,18 @@ double entropia(int Nmol, std::vector<int> & vector)
       }
     }
     aux= aux/Nmol;
-    sum-= aux*(std::log(aux));
-  
-    return sum;
-    //    double A_Nmol = Nmol;
-    //double sum = 0;
-    //int aux = 0;
-    //int counter = 0;
-    //int counter2 = 0;
-    //aux = vector[counter2];
-    //while(counter2 < Nmol)
-    //{
-    //    while(counter2 < Nmol && aux == vector[counter2])
-    //    {
-    //        counter += 1;
-    //        counter2 += 1;
-    //    }
-    //    sum += (counter/A_Nmol)*std::log(counter/A_Nmol);
-    //    counter = 0;
-    //    if(counter2 < Nmol)
-    //    {
-    //        aux = vector[counter2];
-    //    }
-    //}
-    //return -sum;
+    sum-= aux*(std::log(aux)); 
+    return sum;   
+}
+
+double radius(int Nmol, std::vector<int> & vector, int size)
+{
+  double r=0;
+  for(int ii=0; ii<Nmol;++ii){
+    r+= std::pow((vector[ii]/size)-(size/2),2)+std::pow((vector[ii]%size)-(size/2),2);
+  }
+  r=r/Nmol;
+  return std::sqrt(r);
 }
 
 
@@ -97,7 +87,6 @@ void step (int Nmol, int size, std::vector<int> & vector, int seed, int Nstep)
     int mol = 0;
     std::uniform_int_distribution<> dis_2{0, 4};
     int paso = 0;
-    int aqui = 0;
     std::cout << 0 << "\t" << entropia(Nmol, vector) << "\n";
     for(int ii = 1; ii <= Nstep; ++ii)
     {
@@ -116,9 +105,9 @@ void step (int Nmol, int size, std::vector<int> & vector, int seed, int Nstep)
             else vector[mol] += size -1;//se teletransporta hacia la pared derecha
         }
         else if (paso==4) {
-            if (aqui % size != size-1)  vector[mol] += 1;//le voy a dar en la cara marica
-            else vector[mol] = aqui/size; //se teletransporta hacia la pared izquierda
+            if (vector[mol] % size != size-1)  vector[mol] += 1;//le voy a dar en la cara marica
+            else vector[mol] = vector[mol]/size; //se teletransporta hacia la pared izquierda
         }
-        std::cout << ii << "\t" << entropia(Nmol, vector) << "\n";
+        std::cout << ii << "\t" << entropia(Nmol, vector) <<"\t"<<radius( Nmol, vector,size) << "\n";
     }
 }
