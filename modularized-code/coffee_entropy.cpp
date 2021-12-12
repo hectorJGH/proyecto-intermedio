@@ -27,7 +27,7 @@ void step (int Nmol, int size, std::vector<int> & vector, int seed, int Nstep)
     int mol = 0;
     std::uniform_int_distribution<> dis_2{0, 4};
     int paso = 0;
-    int t_equilibrio;
+    int t_equilibrio = 0, counter = 1;
     double aux1 = 0, aux2 = 0;
     aux1 = entropia(Nmol, vector);
     std::ofstream output;
@@ -55,9 +55,10 @@ void step (int Nmol, int size, std::vector<int> & vector, int seed, int Nstep)
         }
         output << ii << "\t" << entropia(Nmol, vector) <<"\t"<<radius( Nmol, vector,size) << "\n";
         aux2 = entropia(Nmol, vector);
-        if(std::fabs(aux1 - aux2)<0.001)
+        if(counter == 1 && std::fabs(aux1 - aux2)<0.001)
         {
             t_equilibrio = ii;
+            counter += 1;
         }
     }
     std::cout << "El tiempo para el cual se alcanza el equilibrio es " << t_equilibrio << "\n";
