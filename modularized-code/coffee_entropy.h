@@ -1,3 +1,5 @@
+#ifndef COFFEE_ENTROPY_H
+#define COFFEE_ENTROPY_H
 #include <algorithm>
 #include <random>
 #include <iostream>
@@ -7,7 +9,7 @@
 
 //Ubica las particulas aleatoriamente en su distribucion inicial
 //cerca al centro de la taza en un espacio size/ratio
-void initial_distribution_array (int Nmol, int size, int ratio, std::vector<int> & vector, int seed);
+void initial_distribution_array (int Nmol, int size, int init_size, std::vector<int> & vector, int seed);
 
 //Se realizan todos los pasos de la difusion y en cada uno se
 //imprime el paso, la entropia total y el radio de difusion
@@ -19,3 +21,4 @@ double entropia(int Nmol, std::vector<int> & vector);
 //Calcula el radio de difusion de la crema de cafe
 double radius(int Nmol, std::vector<int> & vector, int size);
 
+#endif

@@ -3,12 +3,12 @@
 
 //Ubica las particulas aleatoriamente en su distribucion inicial
 //cerca al centro de la taza en un espacio size/ratio
-void initial_distribution_array (int Nmol, int size, int ratio, std::vector<int> & vector, int seed)
+void initial_distribution_array (int Nmol, int size, int init_size, std::vector<int> & vector, int seed)
 {
-    int init_size = size/ratio;
+    //int init_size = size/ratio;
 
     std::mt19937 gen(seed); //OJO: de pronto se generan los numeros aleatorios 2 veces
-    std::uniform_int_distribution<> dis{0, init_size};
+    std::uniform_int_distribution<> dis{1, init_size};
 
     for (int n=0; n<Nmol; n++){
         int i=0,j=0;
@@ -27,7 +27,12 @@ void step (int Nmol, int size, std::vector<int> & vector, int seed, int Nstep)
     int mol = 0;
     std::uniform_int_distribution<> dis_2{0, 4};
     int paso = 0;
-    std::cout << 0 << "\t" << entropia(Nmol, vector) << "\n";
+    int t_equilibrio = 0, counter = 1;
+    double aux1 = 0, aux2 = 0;
+    aux1 = entropia(Nmol, vector);
+    std::ofstream output;
+    output.open("entropy.txt");
+    output << 0 << "\t" << entropia(Nmol, vector) << "\n";
     for(int ii = 1; ii <= Nstep; ++ii)
     {
         mol = dis_1(gen);
@@ -48,8 +53,16 @@ void step (int Nmol, int size, std::vector<int> & vector, int seed, int Nstep)
             if (vector[mol] % size != size-1)  vector[mol] += 1;//le voy a dar en la cara marica
             else vector[mol] = vector[mol]/size; //se teletransporta hacia la pared izquierda
         }
-        std::cout << ii << "\t" << entropia(Nmol, vector) <<"\t"<<radius( Nmol, vector,size) << "\n";
+        output << ii << "\t" << entropia(Nmol, vector) <<"\t"<<radius( Nmol, vector,size) << "\n";
+        aux2 = entropia(Nmol, vector);
+        if(counter == 1 && std::fabs(aux1 - aux2)<0.001)
+        {
+            t_equilibrio = ii;
+            counter += 1;
+        }
     }
+    std::cout << "El tiempo para el cual se alcanza el equilibrio es " << t_equilibrio << "\n";
+    output.close();
 }
 
 //Calcula la entropia de cierta configuracion de las particulas
