@@ -1,5 +1,7 @@
 #include <iostream>
-#include "coffe_entropy.h"
+#include "coffee_entropy.h"
+#include <fstream>
+#include <vector>
 
 int main(int argc, char *argv[])
 {
@@ -7,7 +9,7 @@ int main(int argc, char *argv[])
     int size = 0;
     int Nstep = 0;
     int seed = 0;
-    int ratio = 10;
+    int init_size = 2;
 
     //Lectura desde el archivo input.txt
     std::ifstream input;
@@ -22,7 +24,7 @@ int main(int argc, char *argv[])
 
     //Ubica las particulas aleatoriamente en su distribucion inicial
     //cerca al centro de la taza
-    initial_distribution_array(Nmol, size, ratio, particles, seed);
+    initial_distribution_array(Nmol, size, init_size, particles, seed);
 
     //Se realizan todos los pasos de la difusion y en cada uno se
     //imprime el paso, la entropia total y el radio de difusion
