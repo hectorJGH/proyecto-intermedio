@@ -7,6 +7,7 @@
 #include <fstream>
 #include <cmath>
 
+void cuatro_cuadros_centrados (int Nmol, int size, int ratio, std::vector<int> & vector, int seed);//funciona copas con lado par
 void with_hole(int size, std:: vector<int> & vector, int seed, int Nstep);
 void initial_distribution_array (int Nmol, int size, int ratio, std::vector<int> & vector, int seed);// int * vector?
 void step (int Nmol, int size, std::vector<int> & vector, int seed, int Nstep);
@@ -34,7 +35,8 @@ int main(int argc, char *argv[])
     
     //Ubica las particulas aleatoriamente en su distribucion inicial
     //cerca al centro de la taza
-    initial_distribution_array(Nmol, size, ratio, particles, seed);
+    cuatro_cuadros_centrados(Nmol, size, ratio, particles, seed);
+    //initial_distribution_array(Nmol, size, ratio, particles, seed);
 
     //Se realizan todos los pasos de la difusion y en cada uno se
     //imprime el paso, la entropia total y el radio de difusion
@@ -60,6 +62,19 @@ void initial_distribution_array (int Nmol, int size, int ratio, std::vector<int>
     }
 }
 
+void cuatro_cuadros_centrados (int Nmol, int size, int ratio, std::vector<int> & vector, int seed)
+{
+  std::mt19937 gen(seed); //OJO: de pronto se generan los numeros aleatorios 2 veces
+  std::uniform_int_distribution<> dis{0,1};
+  int esquina=(size-1)/2;
+  for (int n=0; n<Nmol; n++){
+	int i=0,j=0;
+	i = esquina + dis(gen);
+	j = esquina + dis(gen);
+        vector[n] = i*size + j;
+    }
+
+}
 double entropia(int Nmol, std::vector<int> & vector)
 {
     std::sort(vector.begin(), vector.end());//ordena los valores del vector para que los que son iguales queden contiguos
@@ -84,7 +99,9 @@ double radius(int Nmol, std::vector<int> & vector, int size)
 {
   double r=0;
   for(int ii=0; ii<Nmol;++ii){
-    r+= std::pow((vector[ii]/size)-(size/2),2)+std::pow((vector[ii]%size)-(size/2),2);
+    int x=(vector[ii]/size)-((size-1)/2);
+    int y=(vector[ii]%size)-((size-1)/2);
+    r+= std::pow(x-0.5,2)+std::pow(y-0.5,2);
   }
   r=r/Nmol;
   return std::sqrt(r);
@@ -98,7 +115,8 @@ void step (int Nmol, int size, std::vector<int> & vector, int seed, int Nstep)
     int mol = 0;
     std::uniform_int_distribution<> dis_2{0, 4};
     int paso = 0;
-    std::cout << 0 << "\t" << entropia(Nmol, vector) << "\n";
+    int rad=radius( Nmol, vector,size);
+    std::cout << 0 << "\t" << entropia(Nmol, vector)<<"\t"<<radius( Nmol, vector,size) << "\n";
     for(int ii = 1; ii <= Nstep; ++ii)
     {
         mol = dis_1(gen);
