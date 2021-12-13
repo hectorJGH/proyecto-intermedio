@@ -2,13 +2,13 @@
 #include "coffee_entropy.h"
 
 //Ubica las particulas aleatoriamente en su distribucion inicial
-//cerca al centro de la taza en un espacio size/ratio
+//cerca al centro de la taza en un cuadrado de lado init_size
 void initial_distribution_array (int Nmol, int size, int init_size, std::vector<int> & vector, int seed)
 {
     //int init_size = size/ratio;
 
     std::mt19937 gen(seed); //OJO: de pronto se generan los numeros aleatorios 2 veces
-    std::uniform_int_distribution<> dis{1, init_size};
+    std::uniform_int_distribution<> dis{0, init_size-1};
 
     for (int n=0; n<Nmol; n++){
         int i=0,j=0;
