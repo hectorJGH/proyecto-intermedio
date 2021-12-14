@@ -29,7 +29,6 @@ void step (int Nmol, int size, std::vector<int> & vector, int seed, int Nstep)
     int paso = 0;
     int t_equilibrio = 0, counter = 1;
     double aux1 = 0, aux2 = 0;
-    aux1 = entropia(Nmol, vector);
     std::ofstream output;
     output.open("entropy.txt");
     output << 0 << "\t" << entropia(Nmol, vector) << "\n";
@@ -54,11 +53,18 @@ void step (int Nmol, int size, std::vector<int> & vector, int seed, int Nstep)
             else vector[mol] = vector[mol]/size; //se teletransporta hacia la pared izquierda
         }
         output << ii << "\t" << entropia(Nmol, vector) <<"\t"<<radius( Nmol, vector,size) << "\n";
-        aux2 = entropia(Nmol, vector);
-        if(counter == 1 && std::fabs(aux1 - aux2)<0.001)
+        if(counter == 1 && ii%100 == 99)
         {
-            t_equilibrio = ii;
-            counter += 1;
+            aux1 = entropia(Nmol, vector);
+        }
+        if(ii%100 == 0)
+        {
+            if(counter == 1 && std::fabs(aux1 - aux2)<0.000001)
+            {
+                t_equilibrio = ii;
+                counter += 1;
+            }
+            aux2 = entropia(Nmol, vector);
         }
     }
     std::cout << "El tiempo para el cual se alcanza el equilibrio es " << t_equilibrio << "\n";
