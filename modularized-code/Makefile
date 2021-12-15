@@ -29,7 +29,7 @@ comp_gprof_1.x: coffee_entropy_main.cpp coffee_entropy.cpp coffee_entropy.h
 
 gprof_1: comp_gprof_1.x
 	./$< > basura.txt ;\
-	gprof ./$< gmon.out > gprof_report_1.txt
+	gprof ./$< gmon.out > gprof-report_1.txt
 
 comp_gprof_2.x: punto_2_main.cpp coffee_entropy.cpp coffee_entropy.h
 	g++ -g -pg -Wall coffee_entropy.h coffee_entropy.cpp $< -o $@
@@ -42,7 +42,9 @@ comp_cach_1.x: coffee_entropy_main.cpp coffee_entropy.cpp coffee_entropy.h
 	g++ -g coffee_entropy.h coffee_entropy.cpp $< -o $@
 
 cachegrind_1: comp_cach_1.x
-	valgrind --tool=cachegrind ./$<
+	rm cachegrind.out.* ;\
+	valgrind --tool=cachegrind ./$< > basura.txt ;\
+	cg_annotate --auto=yes cachegrind.out.* > cachegrind-report.txt
 
 comp_cach_2.x: punto_2_main.cpp coffee_entropy.cpp coffee_entropy.h
 	g++ -g coffee_entropy.h coffee_entropy.cpp $< -o $@
@@ -54,13 +56,13 @@ comp_memc_1.x: coffee_entropy_main.cpp coffee_entropy.cpp coffee_entropy.h
 	g++ -g coffee_entropy.h coffee_entropy.cpp $< -o $@
 
 memcheck_1: comp_memc_1.x
-	valgrind --tool=memcheck ./$<
+	valgrind --tool=memcheck ./$< >basura.txt
 
 comp_memc_2.x: punto_2_main.cpp coffee_entropy.cpp coffee_entropy.h
 	g++ -g coffee_entropy.h coffee_entropy.cpp $< -o $@
 
 memcheck_2: comp_memc_2.x
-	valgrind --tool=memcheck ./$<
+	valgrind --tool=memcheck ./$< >basura.txt
 
 #targets punto 4
 hole.x: punto_4_main.cpp input4.txt coffee_entropy.h coffee_entropy.cpp
@@ -82,4 +84,4 @@ report: Informe.tex Entropy.png Fit_equilibrium.png Hole_fit.png Radius_fit.png 
 	pdflatex $<
 
 clean:
-	rm -f *.x *.png *.log radius_fit.txt basura.txt *.out
+	rm -f *.x *.png *.log radius_fit.txt basura.txt *.out* 
