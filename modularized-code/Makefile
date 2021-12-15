@@ -62,16 +62,16 @@ memcheck_2: comp_memc_2.x
 
 #targets punto 4
 hole.x: punto_4_main.cpp input4.txt coffee_entropy.h coffee_entropy.cpp
-        g++ -g -fsanitize=address -fsanitize=undefined -fsanitize=leak coffee_entropy.h coffee_entropy.cpp $< -o $@
+	g++ -g -fsanitize=address -fsanitize=undefined -fsanitize=leak coffee_entropy.h coffee_entropy.cpp $< -o $@
 
 hole.txt: hole.x
-        ./$< > $@
+	./$< > $@
 
 hole_last.txt: hole.txt
-        sed -n '100000,1000000p' $< > $@
+	sed -n '100000,1000000p' $< > $@
 
 Hole_fit.png: graph_hole.gp hole_last.txt hole.txt
-        gnuplot $<
+	gnuplot $<
 ###
 
 clean:
