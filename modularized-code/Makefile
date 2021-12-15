@@ -24,5 +24,29 @@ punto_2.x: punto_2.cpp coffee_entropy.h coffee_entropy.cpp
 graph_p_2: punto_2.x input.txt
 	./$< | gnuplot
 
+comp_gprof_1.x: coffee_entropy_main.cpp coffee_entropy.cpp coffee_entropy.h
+	g++ -g -gp coffee_entropy.h coffee_entropy.cpp $< -o $@
+
+gprof_1: comp_gprof_1
+	gprof ./$< gmon.out > gprof-report_1.txt
+
+comp_gprof_2.x: punto_2_main.cpp coffee_entropy.cpp coffee_entropy.h
+	g++ -g -gp coffee_entropy.h coffee_entropy.cpp $< -o $@
+
+gprof_2: comp_gprof_2
+	gprof ./$< gmon.out > gprof-report_2.txt
+
+comp_cach_1.x: coffee_entropy_main.cpp coffee_entropy.cpp coffee_entropy.h
+	g++ -g coffee_entropy.h coffee_entropy.cpp $< -o $@
+
+cachegrind_1: comp_cach_1.x
+	valgrind --tool=cachegrind ./$<
+
+comp_cach_2.x: punto_2_main.cpp coffee_entropy.cpp coffee_entropy.h
+	g++ -g coffee_entropy.h coffee_entropy.cpp $< -o $@
+
+cachegrind_2: comp_cach_2.x
+	valgrind --tool=cachegrind ./$<
+
 clean:
 	rm -f *.x *.png *.log radius_fit.txt
