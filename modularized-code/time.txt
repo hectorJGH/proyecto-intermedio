@@ -1,0 +1,13 @@
+#Este archivo fue copiado a mano despues de compilar con el comando
+# g++ -O3 -g -fsanitize=address -fsanitize=undefined -fsanitize=leak coffee_entropy.h coffee_entropy.cpp parallize_main.cpp
+# y sin la bandera -O3. Y luego se ejecuta en la consola el comando 
+# for index in 4 10 20 30 50 100 200 400; do time ./a.out $index > basura.txt; done
+#latticesize	time -O3	time
+4	14,183	57,805
+10	15,518	60,642
+20	17,821	64,335
+30	18,414	64,840
+50	18,881	64,839
+100	18,787	65,376
+200	18,817	65,364
+400	18,888	65,539
