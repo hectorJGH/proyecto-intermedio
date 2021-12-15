@@ -1,4 +1,4 @@
-all: Entropia.png
+all: entropia.x
 
 entropia.x: coffee_entropy_main.cpp coffee_entropy.cpp coffee_entropy.h input.txt
 	g++ -O3 -g -fsanitize=address -fsanitize=undefined -fsanitize=leak coffee_entropy.h coffee_entropy.cpp $< -o $@
