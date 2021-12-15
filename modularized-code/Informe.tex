@@ -112,8 +112,16 @@ Obteniendo así la siguiente gráfica:
 
 
 
-\subsection{Tamaño de lagota en función del tiempo}
-Usando un tamaño para la copa de 20x20 y la ecuación \ref{eqradio}, se simuló la difusión de las moléculas y se ajustaron los datos a la función:
+\subsection{Tamaño de la gota en función del tiempo}
+Usando un tamaño para la copa de 20x20 y la ecuación \ref{eqradio}, se simuló la difusión de las moléculas, obteniendo así la siguiente gráfica:
+\begin{figure}[H]
+   \centering
+   \includegraphics[width=0.4\textwidth]{Radius.png}
+   \caption{Radio de la gota de crema en función del tiempo}
+   \label{fig:radius}
+ \end{figure}
+
+y se ajustaron los datos, antes de que se estabilizaran, a la función:
 \begin{equation}
     R(t)=A(t)^{B}+C
 \end{equation}
@@ -126,7 +134,7 @@ Donde la cosntante C es igual al radio inicial de lagota, el cual fue de 0.70710
    \label{fig:radius}
  \end{figure}
   Como vemos de la figura \ref{fig:radius}, el tamaño se ajsta muy bien con la raiz cuadrada del tiempo
-  
+    
   
 \subsection{Copa con hueco}
 Para una copa de tamaño 50x50, se abrió un hueco de longitud 10 en la parte inferior del lado derecho de la taza, de manera que las partículas se pudieran escapar. Se ajustaron los datos del número de moléculas en función del tiempo con la siguiente función:
