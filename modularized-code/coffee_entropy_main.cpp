@@ -9,7 +9,6 @@ int main(int argc, char *argv[])
     int size = 0;
     int Nstep = 0;
     int seed = 0;
-    int init_size = 2;
 
     //Lectura desde el archivo input.txt
     std::ifstream input;

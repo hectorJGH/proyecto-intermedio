@@ -9,7 +9,6 @@ int main(int argc, char ** argv)
   int size = 0;
     int Nstep = 0;
     int seed = 0;
-    int init_size = 2;
 
     //Lectura desde el archivo input.txt
     std::ifstream input;
@@ -35,7 +34,7 @@ int main(int argc, char ** argv)
     index_int += 1;
     particles = {0};
     particles.resize(size);
-    cuatro_cuadros_centrados(Nmol, size, init_size, particles, seed);
+    cuatro_cuadros_centrados(Nmol, size, particles, seed);
   }
   return 0;
 }
