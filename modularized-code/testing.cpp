@@ -2,13 +2,12 @@
 #include <iostream>
 #include <fstream>
 
-int main(int argc, char * argv)
+int main(int argc, char ** argv)
 {
     int Nmol = 0;
     int size = 0;
     int Nstep = 0;
     int seed = 0;
-    int init_size = 2;
 
     //Lectura desde el archivo input.txt
     std::ifstream input;
@@ -23,7 +22,7 @@ int main(int argc, char * argv)
 
     //Ubica las particulas aleatoriamente en su distribucion inicial
     //cerca al centro de la taza
-    cuatro_cuadros_centrados(Nmol, size, init_size, particles, seed);
+    cuatro_cuadros_centrados(Nmol, size, particles, seed);
 
     std::cout << "Para una copa de arista par, el radio de la distribución inicial debe ser raíz de 2 sobre 2, a continuación se imprimen aristas pares con el error de su radio respecto al valor esperado\n";
 
@@ -33,7 +32,7 @@ int main(int argc, char * argv)
         particles = {0};
         particles.resize(Nmol);
         size += 2;
-        cuatro_cuadros_centrados(Nmol, size, init_size, particles, seed);
+        cuatro_cuadros_centrados(Nmol, size, particles, seed);
     }
 
     return 0;
