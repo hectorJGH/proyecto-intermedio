@@ -21,7 +21,7 @@ int main(int argc, char ** argv)
     //de cada particula
     std::vector<int> particles{0}; //inicializa el vector
     particles.resize(Nmol);
-    initial_distribution_array(Nmol, size, init_size, particles, seed);
+    cuatro_cuadros_centrados(Nmol, size, init_size, particles, seed);
   std::string base = "entropy";
   int  index_int = 1;
   std::cout << "set xlabel 'Time'; " << "set ylabel 'Entropy'; " << "unset key; " << "set term png; " << "\n";
@@ -35,7 +35,7 @@ int main(int argc, char ** argv)
     index_int += 1;
     particles = {0};
     particles.resize(size);
-    initial_distribution_array(Nmol, size, init_size, particles, seed);
+    cuatro_cuadros_centrados(Nmol, size, init_size, particles, seed);
   }
   return 0;
 }
