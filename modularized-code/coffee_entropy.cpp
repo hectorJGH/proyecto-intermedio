@@ -1,7 +1,7 @@
 #include <iostream>
 #include "coffee_entropy.h"
 
-void cuatro_cuadros_centrados (int Nmol, int size, int ratio, std::vector<int> & vector, int seed)
+void cuatro_cuadros_centrados (int Nmol, int size, std::vector<int> & vector, int seed)
 {
   std::mt19937 gen(seed); //OJO: de pronto se generan los numeros aleatorios 2 veces
   std::uniform_int_distribution<> dis{0,1};

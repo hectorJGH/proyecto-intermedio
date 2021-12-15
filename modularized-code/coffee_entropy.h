@@ -7,7 +7,7 @@
 #include <fstream>
 #include <cmath>
 
-void cuatro_cuadros_centrados (int Nmol, int size, int ratio, std::vector<int> & vector, int seed);
+void cuatro_cuadros_centrados (int Nmol, int size, std::vector<int> & vector, int seed);
 
 //Se realizan todos los pasos de la difusion y en cada uno se
 //imprime el paso, la entropia total y el radio de difusion
