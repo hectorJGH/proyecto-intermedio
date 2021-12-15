@@ -79,8 +79,54 @@ double radius(int Nmol, std::vector<int> & vector, int size)
 {
   double r=0;
   for(int ii=0; ii<Nmol;++ii){
-    r+= std::pow((vector[ii]/size)-(size/2),2)+std::pow((vector[ii]%size)-(size/2),2);
+    int x=(vector[ii]/size)-((size-1)/2);
+    int y=(vector[ii]%size)-((size-1)/2);
+    r+= std::pow(x-0.5,2)+std::pow(y-0.5,2);
   }
   r=r/Nmol;
   return std::sqrt(r);
+}
+
+void with_hole(int size, std:: vector<int> & vector, int seed, int Nstep, int ratio)
+{
+      std::mt19937 gen(seed); //OJO: de pronto se generan los numeros aleatorios 3 veces
+      int numero = static_cast<int>(vector.size());
+      std::uniform_int_distribution<> dis_1{0, numero -1};
+    int mol = 0;
+    std::uniform_int_distribution<> dis_2{0, 4};
+    int paso = 0;
+    for(int ii = 1; ii <= Nstep; ++ii)
+    {
+      if(numero==0)break;
+        mol = dis_1(gen);
+        if(mol>numero-1){
+          continue;
+        }//Se siguen contando pasos por las moleculas afuera
+        paso = dis_2(gen);
+        if (paso==1) {
+            if (vector[mol]/size != 0) vector[mol] += -size;//arriba
+            else vector[mol] += (size-1)*size; // Se teletransporta
+        }
+        else if (paso==2) {
+            if (vector[mol]/size != size-1) vector[mol] += size;//abajo
+            else {
+              vector[mol] = vector[mol] % size;//se tp
+            }
+        }
+        else if (paso==3) {
+            if (vector[mol] % size != 0) vector[mol] += -1;//izquierda camarada
+            else vector[mol] += size -1;//se tp
+        }
+        else if (paso==4) {
+            if (vector[mol] % size != size-1)  vector[mol] += 1;//le voy a dar en la cara marica
+            else {
+              if((size-1-size/ratio) <= vector[mol]/size <= size-1){
+                vector.erase(vector.begin()+mol);//sale por la derecha
+                numero=static_cast<int>(vector.size());
+              }
+               else vector[mol] = vector[mol]/size; //se tp
+            }
+        }
+        std::cout << ii <<"\t"<<numero<< "\n";
+    }
 }
