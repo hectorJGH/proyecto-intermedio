@@ -48,5 +48,17 @@ comp_cach_2.x: punto_2_main.cpp coffee_entropy.cpp coffee_entropy.h
 cachegrind_2: comp_cach_2.x
 	valgrind --tool=cachegrind ./$<
 
+comp_memc_1.x: coffee_entropy_main.cpp coffee_entropy.cpp coffee_entropy.h
+	g++ -g coffee_entropy.h coffee_entropy.cpp $< -o $@
+
+memcheck_1: comp_memc_1.x
+	valgrind --tool=memcheck ./$<
+
+comp_memc_2.x: punto_2_main.cpp coffee_entropy.cpp coffee_entropy.h
+	g++ -g coffee_entropy.h coffee_entropy.cpp $< -o $@
+
+memcheck_2: comp_memc_2.x
+	valgrind --tool=memcheck ./$<
+
 clean:
 	rm -f *.x *.png *.log radius_fit.txt
