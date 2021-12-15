@@ -7,9 +7,7 @@
 #include <fstream>
 #include <cmath>
 
-//Ubica las particulas aleatoriamente en su distribucion inicial
-//cerca al centro de la taza en un espacio size/ratio
-void initial_distribution_array (int Nmol, int size, int init_size, std::vector<int> & vector, int seed);
+void cuatro_cuadros_centrados (int Nmol, int size, int ratio, std::vector<int> & vector, int seed);
 
 //Se realizan todos los pasos de la difusion y en cada uno se
 //imprime el paso, la entropia total y el radio de difusion

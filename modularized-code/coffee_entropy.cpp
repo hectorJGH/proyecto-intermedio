@@ -1,21 +1,18 @@
 #include <iostream>
 #include "coffee_entropy.h"
 
-//Ubica las particulas aleatoriamente en su distribucion inicial
-//cerca al centro de la taza en un cuadrado de lado init_size
-void initial_distribution_array (int Nmol, int size, int init_size, std::vector<int> & vector, int seed)
+void cuatro_cuadros_centrados (int Nmol, int size, int ratio, std::vector<int> & vector, int seed)
 {
-    //int init_size = size/ratio;
-
-    std::mt19937 gen(seed); //OJO: de pronto se generan los numeros aleatorios 2 veces
-    std::uniform_int_distribution<> dis{0, init_size-1};
-
-    for (int n=0; n<Nmol; n++){
-        int i=0,j=0;
-        i = size/2 -init_size/2 + dis(gen);
-        j = size/2 -init_size/2 + dis(gen);
+  std::mt19937 gen(seed); //OJO: de pronto se generan los numeros aleatorios 2 veces
+  std::uniform_int_distribution<> dis{0,1};
+  int esquina=(size-1)/2;
+  for (int n=0; n<Nmol; n++){
+	int i=0,j=0;
+	i = esquina + dis(gen);
+	j = esquina + dis(gen);
         vector[n] = i*size + j;
     }
+
 }
 
 //Se realizan todos los pasos de la difusion y en cada uno se
