@@ -168,7 +168,12 @@ De la figura \ref{fig:hole}, podemos apreciar que el número de partículas dent
 
 Inicialmente, se pensó modelar el sistema como una matriz de tamaño LxL con casillas que tuvieran el dato de cuantas molécula se hallan en cada una. Sin embargo esta idea resultó algo engorrosa de implementar, puesto se tenan algoritmos demasiado largos para encontrar las partículas dentro de la taza, así como también problemas como el que se hacian demasiados saltos al revisar la memoria, por ejemplo, se veian cosas del tipo revisar la componente [0][0] y saltar a revisar y manipular la componente [0][L-1] para simular una teletrasportación. Debido a lo anterior, se optó por modelar el sistema como un vector de Nmol partículas y cada casilla del vector con un número de 0 a L+L-1. Con lo anterior, se obtuvo el siguiente comportamiento para el tiempo de cómputo de la entropía para distintos tamaños:
 
-
+\begin{figure}[H]
+   \centering
+   \includegraphics[width=0.4\textwidth]{Time.png}
+   \caption{Tiempo de ejecución para distintos tamaños y con dos distintas banderas de optimización.}
+   \label{fig:performance}
+ \end{figure}
 
 
 
