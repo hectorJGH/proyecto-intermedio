@@ -18,7 +18,7 @@ Radius_fit.png: graph_fit_radius.gp radius_fit.txt
 f_eq: graf_fit_equilibrio.gp lattice_v_t_eq.txt
 	gnuplot $<
 
-punto_2.x: punto_2.cpp coffee_entropy.h coffee_entropy.cpp
+punto_2.x: punto_2_main.cpp coffee_entropy.h coffee_entropy.cpp
 	g++ -O3 -g -fsanitize=address -fsanitize=undefined -fsanitize=leak coffee_entropy.h coffee_entropy.cpp $< -o $@
 
 graph_p_2: punto_2.x input.txt
@@ -80,7 +80,7 @@ Hole_fit.png: graph_hole.gp hole_last.txt hole.txt
 Time.png: time.gp time.txt
 	gnuplot $<
 
-report: Informe.tex Entropy.png Fit_equilibrium.png Hole_fit.png Radius_fit.png Time.png
+report: Informe.tex Entropy.png Fit_equilibrium.png Hole_fit.png Radius_fit.png f_eq Time.png
 	pdflatex $<
 
 clean:

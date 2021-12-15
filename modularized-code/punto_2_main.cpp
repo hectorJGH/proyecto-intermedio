@@ -35,7 +35,7 @@ int main(int argc, char ** argv)
     index_int += 1;
     particles = {0};
     particles.resize(size);
-    cuatro_cuadros_centrados(Nmol, size, init_size, particles, seed);
+    cuatro_cuadros_centrados(Nmol, size, particles, seed);
   }
   return 0;
 }
