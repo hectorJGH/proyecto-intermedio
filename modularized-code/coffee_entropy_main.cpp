@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 
     //Ubica las particulas aleatoriamente en su distribucion inicial
     //cerca al centro de la taza
-    initial_distribution_array(Nmol, size, init_size, particles, seed);
+    cuatro_cuadros_centrados(Nmol, size, init_size, particles, seed);
 
     //Se realizan todos los pasos de la difusion y en cada uno se
     //imprime el paso, la entropia total y el radio de difusion
