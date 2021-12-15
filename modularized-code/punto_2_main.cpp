@@ -23,7 +23,7 @@ int main(int argc, char ** argv)
     cuatro_cuadros_centrados(Nmol, size, particles, seed);
   std::string base = "entropy";
   int  index_int = 1;
-  std::cout << "set xlabel 'Time'; " << "set ylabel 'Entropy'; " << "unset key; " << "set term png; " << "\n";
+  std::cout << "set xlabel 'Time'; " << "set ylabel 'Entropy'; " << "unset key; set log x; " << "set term png; " << "\n";
   for(int ii = 1; ii<12; ++ii)
   {
     std::cout << "set out '" << base + std::to_string(index_int) << ".png'\n";
