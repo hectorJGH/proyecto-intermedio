@@ -73,7 +73,10 @@ hole_last.txt: hole.txt
 Hole_fit.png: graph_hole.gp hole_last.txt hole.txt
 	gnuplot $<
 ###
-report: Informe.tex Entropy.png Fit_equilibrium.png Hole_fit.png Radius_fit.png
+Time.png: time.gp time.txt
+	gnuplot $<
+
+report: Informe.tex Entropy.png Fit_equilibrium.png Hole_fit.png Radius_fit.png Time.png
 	pdflatex $<
 
 clean:
