@@ -25,15 +25,17 @@ graph_p_2: punto_2.x input.txt
 	./$< | gnuplot
 
 comp_gprof_1.x: coffee_entropy_main.cpp coffee_entropy.cpp coffee_entropy.h
-	g++ -g -gp coffee_entropy.h coffee_entropy.cpp $< -o $@
+	g++ -g -pg -Wall coffee_entropy.h coffee_entropy.cpp $< -o $@
 
-gprof_1: comp_gprof_1
-	gprof ./$< gmon.out > gprof-report_1.txt
+gprof_1: comp_gprof_1.x
+	./$< > basura.txt ;\
+	gprof ./$< gmon.out > gprof_report_1.txt
 
 comp_gprof_2.x: punto_2_main.cpp coffee_entropy.cpp coffee_entropy.h
-	g++ -g -gp coffee_entropy.h coffee_entropy.cpp $< -o $@
+	g++ -g -pg -Wall coffee_entropy.h coffee_entropy.cpp $< -o $@
 
-gprof_2: comp_gprof_2
+gprof_2: comp_gprof_2.x
+	./$< > basura.txt ;\
 	gprof ./$< gmon.out > gprof-report_2.txt
 
 comp_cach_1.x: coffee_entropy_main.cpp coffee_entropy.cpp coffee_entropy.h
@@ -80,4 +82,4 @@ report: Informe.tex Entropy.png Fit_equilibrium.png Hole_fit.png Radius_fit.png 
 	pdflatex $<
 
 clean:
-	rm -f *.x *.png *.log radius_fit.txt
+	rm -f *.x *.png *.log radius_fit.txt basura.txt *.out
