@@ -1,0 +1,180 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish, es-tabla]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{amsfonts}
+\usepackage{dcolumn}
+\usepackage{siunitx}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{adjustbox}
+\usepackage{textcomp}
+\usepackage{amsthm}
+\usepackage{multicol}
+\usepackage{subfigure}
+\usepackage[utf8]{inputenc}
+
+\usepackage{multirow}
+\usepackage{color}
+\usepackage[hidelinks]{hyperref}
+\usepackage{dcolumn}
+\usepackage{float}
+\usepackage{setspace}
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=1.5cm,right=1.5cm,marginparwidth=1.75cm]{geometry}
+\usepackage{array}
+\usepackage{graphicx}
+
+\title{Proyecto intermedio-Entropía sobre una taza de café}
+\author{Juan Sebastián Martínez Arévalo, Hécto Julián Gutierrez Hoyos, José Antonio Valderrama Botía. }
+\date{December 2021}
+
+\begin{document}
+
+\maketitle
+
+\section{Introducción}
+Se simuló el problema de crema sobre una taza de cafe, es decir, un conjunto de moleculas(de espuma) dispersandose en una tazade café cuadrada. Con este sistema, se hcieron gráficas de su entropía, usando la siguiente fórmula:
+\begin{equation}
+    S=-\sum{P_{i}ln(P_{i})}
+    \label{eqentropia}
+\end{equation}
+Donde $p_{i}$ es la probabilidad de ocupación de un estado específico. en teoría, la entropía debería aumentar y después de un cierto tiempo estabilizarse, este tiempo varía dependiendo de las dimensiones de la taza, por lo cual se graficó la evolución de la entropía para distintos tamaños de tazas de café y se ajustaron los datos hallados para confirmar si el tiempo necesario para alcanzar el equilibrio varía como $L^{2}$, donde $L$ es la longitud de un lado de la taza.\par
+
+Seguidamente, se hizo un análisis de del tamaño de la gota de espuma en función del tiempo, para lo cual se utilizó la siguiente ecuación:
+\begin{equation}
+    R=\sqrt{\frac{\sum{r_{i}^{2}}}{N}}
+    \label{eqradio}
+\end{equation}
+Donde $r_{i}$ es el radio de la i-ésima partícula medido desde el centro de la copa y $N$ es el número de partículas. Se graficó el comportamiento del radiode la gota en función del tiempo para una copa de lado $L=20$ y se ajustaron los resultados para comprobar que su tamaño, antes de alcanzar un equilibrio, varia como la raiz del tiempo.\par
+
+Finalmente, se modeló una taza de café con un hueco en una esquina, por el cual se podían escapar las partículas, para hallar el número de partículas en función del tiempo y demostrar que este varía como una exponencial decreciente.
+
+
+\section{Código}
+Para modelar la taza de café, en vez de tener una matriz con casillas que tienen la información de cuantas partículas hay, se decidió crear un solo vector de longitud $Nmolecules$, con espacios los cuales pueden tener un número entre 0 y LxL-1, de manera que cada espacio tiene la información de la posición de una molécula en una matriz que es, de cierta manera, abstracta, puesto que si tenemos la componente k-ésima de un vector, el número de la fila en la que se "halla la particula sería":\par
+\begin{equation}
+    i=\frac{vector[k]}{L}
+    \label{eq_posi_i}
+\end{equation}
+Y el número de la fila vendría dado por:
+\begin{equation}
+    i=vector[k] \% L
+    \label{eq_posi_j}
+\end{equation}
+Donde $\%$ representa el residuo de la división.\par
+Teniendo lo anterior, se procedieron a crear funciones las cuales dieran posicione iniciales a las partículas, simularan el movimiento dentro de la caja, calcularan la entropía del sistema y el radio de la gota en cada instante de tiempo. Para ello, se crearon funciones de acuerdo a las siguientes ideas:
+\begin{itemize}
+    \item Posición inicial: Se distribuyeron uniformemente todas las partículas en 4 puntos centrados en la copa, esto es, se les asignó una posición, tanto para filas como columnas, entre $(L-1)/2$ y $(L)/2$.
+    \item Movimiento: La idea general es escoger una partícula al azar y a esta darle al azar una de 5 órdenes, las cuales eran quedase quita o moverse a una de las 4 casillas aledañas. Teniendo en cuenta el modelo con el que se está trabajando(un vector con Nmol componentes y cada componente con un núero de 0 a (L*L)-1), las anteriores órdendes se traducen en sumara(o restar) 1 para moverse a la derecha(o izquierda) y sumar(o restar) L para moverse abajo(o arriba). Sin embargo, al llegar a las fronteras claramente existen problemas, puesto que las partículas se puede salir, por ende, para la mayoría de simulaciones, se optó por teletrasportar las partículas al lado opuesto de la taza, puesto que esto a la larga simularía una taza de café infinita, lo cual es conveniente ya que así la entropía permanece constante a la larga.
+    \item Entropía: Para calcular la entropía, se ordenaron de manera ascendiente los datos del vector de partículas utilizando el algoritmo de la librería <algorith> de C++, de manera que una vez que se tuviera la información ordenada solo fuera cuestión de contar cuantas partículas habían en cada sección del vector que tuvieran números iguales (y por ende mismas posiciones en la hipotética taza) y con este dato calcular la probabilidad $p_i$ que aparece en la ecuación \ref{eqentropia} como:
+        \begin{equation}
+            p_i=\frac{n_{i}}{Nmol}
+        \end{equation}
+    Donde Nmol es elnúmero de moléculas total y $n_i$ es la cantidad de partículas en una casilla específica.
+    \item Radio: La idea es ubicar unos ejes coordenados en el centro de la taza y medir radios desde tal punto, por lo tanto, se tomó cada partícula del vector de moléculas y a sus posiciones de fila y columna, dadas por las ecuaciones \ref{eq_posi_i} y \ref{eq_posi_j}, se les restó (L-1)/2 y -0.5, este último número restado se debe a que tiene mas sentido colocar las partículas en el centro de cada casilla que en una esquina.
+    
+    \item Taza con hueco: Para esta última función, solo fue necesario modificar la función original de movimiento de manera que se agregara un "hoyo" de tamaño L/5 en la parte inferior de la cara derecha de la copa. Para modelar lo anterior, se puso una condición extra para las partículas que se mueven hacia la derecha, de manera que si estaban pegadas a la pared derech y en la esquina inferior, entonces se removieran los datos de esta en el vector. Además de lo anterior, hay que recordar que en la función de movimiento original, por paso de tiempo, se escoge una de las Nmol partículas que hay para ser movidas. Para el caso de la taza con hueco, teniendo en cuenta que el número de partículas se va haciendo menor a Nmol, con tal de no afectar la escala de tiempo, se hizo que dado el caso de que se escogiera una partícula cuyo índice en el vector de moléculas fuera mayor al tamaño del vector, i.e la molécula está por fuera, se continuara al siguiente paso de tiempo. Lo anterior se puede interpretar como que las moléculas fuera de la caja se siguen moviendo, pero su compotamiento no nos interesa.
+    
+\end{itemize}
+
+
+
+    
+
+\section{Resultados}
+
+\subsection{Entropía en función del tiempo}
+Se simuló una taza de café con longitud $L=20$ y $Nmol=400$ moléculas, obteniendo así la siguientre gráfica para la entropía en función del tiempo:
+\begin{figure}[H]
+   \centering
+   \includegraphics[width=0.4\textwidth]{Entropy.png}
+   \caption{Entropía para el problema de espuma en una copa de café en función del tiempo.}
+   \label{fig:entropy}
+ \end{figure}
+ 
+ De la frigura \ref{fig:entropy} podemos apreciar que inicialmente la entropía aumenta, pero eventualmente alcanza en promedio un valor máximo y se estabiliza alrededor de este.
+
+
+\subsection{Tiempo para llegar al equilibrio en función del tamaño}
+Se graficaron las entropías para distintos tamaños de tazas y con estas se encontraron los tiempos en los que se alcanzaban el equilibrio. con estos, se ajustó un gráfica de tiempo de equilibrio vs tamaño de la copa de a cuerdo a la función:
+\begin{equation}
+    T(L)=A+B*L^{C}
+\end{equation}
+Obteniendo así la siguiente gráfica:
+\begin{figure}[H]
+   \centering
+   \includegraphics[width=0.4\textwidth]{Fit_equilibrium.png}
+   \caption{Ajuste del tamaño tiempo necesario para llegar al equilibrio en función del tamaño de la copa.}
+   \label{fig:eqtime}
+ \end{figure}
+ 
+
+
+
+\subsection{Tamaño de la gota en función del tiempo}
+Usando un tamaño para la copa de 20x20 y la ecuación \ref{eqradio}, se simuló la difusión de las moléculas, obteniendo así la siguiente gráfica:
+\begin{figure}[H]
+   \centering
+   \includegraphics[width=0.4\textwidth]{Radius.png}
+   \caption{Radio de la gota de crema en función del tiempo}
+   \label{fig:radius}
+ \end{figure}
+
+y se ajustaron los datos, antes de que se estabilizaran, a la función:
+\begin{equation}
+    R(t)=A(t)^{B}+C
+\end{equation}
+
+Donde la cosntante C es igual al radio inicial de lagota, el cual fue de 0.707107, obteniendo así la siguiente figura:
+\begin{figure}[H]
+   \centering
+   \includegraphics[width=0.4\textwidth]{Radius_fit.png}
+   \caption{Ajuste del tamaño de una gota de espuma en una taza de café en función del tiempo}
+   \label{fig:radius}
+ \end{figure}
+ Y los siguientes resultados para los parámetros del ajuste:
+ \begin{equation}
+     A=0.031884 \pm 0.000125 \\
+     B= 0.516932 \pm 0.0003978
+ \end{equation}
+ 
+  Como vemos de la figura \ref{fig:radius}, y de los datos arriba mostrados, el radio en función del tiempo varía como la raiz de t.
+  
+    
+  
+\subsection{Copa con hueco}
+Para una copa de tamaño 50x50, se abrió un hueco de longitud 10 en la parte inferior del lado derecho de la taza, de manera que las partículas se pudieran escapar. Se ajustaron los datos del número de moléculas en función del tiempo con la siguiente función:
+\begin{equation}
+    N(t)= A*e^{\frac{B-t}{\tau}}
+\end{equation}
+Donde la constante B es el tiempo desde el cual empezamos a ajustar, la cual para la taza de 50x50 se tomó en $B=100000$, obteniendo así la siguiente gráfica
+\begin{figure}[H]
+   \centering
+   \includegraphics[width=0.4\textwidth]{Hole_fit.png}
+   \caption{Ajuste del número de partículas en función del tiempo con una exponencial.}
+   \label{fig:hole}
+ \end{figure}
+Y los siguientes valores para las constantes:
+\begin{align}
+    A= 400.417 \pm 0.0128 \\
+    \tau = 535906.0 \pm 38.9
+\end{align}
+
+De la figura \ref{fig:hole}, podemos apreciar que el número de partículas dentro de la caja en función del tiempo se ajusta muy bien al comportamiento de una exponencial decreciente.
+
+
+\section{Comentarios sobre el codigo y sus optimzaciones}
+
+Inicialmente, se pensó modelar el sistema como una matriz de tamaño LxL con casillas que tuvieran el dato de cuantas molécula se hallan en cada una. Sin embargo esta idea resultó algo engorrosa de implementar, puesto se tenan algoritmos demasiado largos para encontrar las partículas dentro de la taza, así como también problemas como el que se hacian demasiados saltos al revisar la memoria, por ejemplo, se veian cosas del tipo revisar la componente [0][0] y saltar a revisar y manipular la componente [0][L-1] para simular una teletrasportación. Debido a lo anterior, se optó por modelar el sistema como un vector de Nmol partículas y cada casilla del vector con un número de 0 a L+L-1. Con lo anterior, se obtuvo el siguiente comportamiento para el tiempo de cómputo de la entropía para distintos tamaños:
+
+
+
+
+
+
+
+
+
+
+\end{document}
