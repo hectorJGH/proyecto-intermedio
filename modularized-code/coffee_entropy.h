@@ -21,4 +21,8 @@ double entropia(int Nmol, std::vector<int> & vector);
 //Calcula el radio de difusion de la crema de cafe
 double radius(int Nmol, std::vector<int> & vector, int size);
 
+//Se realizan todos los pasos de la difusion con un agujero en la taza
+// y en cada uno se imprime el paso, y el numero de moleculas dentro
+void with_hole(int size, std:: vector<int> & vector, int seed, int Nstep, int ratio);
+
 #endif
