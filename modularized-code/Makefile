@@ -4,7 +4,7 @@ entropia.x: coffee_entropy_main.cpp coffee_entropy.cpp coffee_entropy.h input.tx
 	g++ -g -fsanitize=address -fsanitize=undefined -fsanitize=leak $< -o $@
 
 entropia.txt: entropia.x
-	./$<
+	./$< > $@
 
 Entropia.png: graf_ent.gp entropia.txt
 	gnuplot $<

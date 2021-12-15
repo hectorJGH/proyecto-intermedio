@@ -27,10 +27,8 @@ void step (int Nmol, int size, std::vector<int> & vector, int seed, int Nstep)
     int mol = 0;
     std::uniform_int_distribution<> dis_2{0, 4};
     int paso = 0;
-    std::ofstream output;
-    output.open("entropy.txt");
-    output.precision(6);
-    output << 0 << "\t" << entropia(Nmol, vector) << "\n";
+    std::cout.precision(6);
+    std::cout << 0 << "\t" << entropia(Nmol, vector) << "\n";
     for(int ii = 1; ii <= Nstep; ++ii)
     {
         mol = dis_1(gen);
@@ -51,9 +49,8 @@ void step (int Nmol, int size, std::vector<int> & vector, int seed, int Nstep)
             if (vector[mol] % size != size-1)  vector[mol] += 1;//le voy a dar en la cara marica
             else vector[mol] = vector[mol]/size; //se teletransporta hacia la pared izquierda
         }
-        output << ii << "\t" << entropia(Nmol, vector) <<"\t"<<radius( Nmol, vector,size) << "\n";
+        std::cout << ii << "\t" << entropia(Nmol, vector) <<"\t" <<radius( Nmol, vector,size) << "\n";
     }
-    output.close();
 }
 
 //Calcula la entropia de cierta configuracion de las particulas
